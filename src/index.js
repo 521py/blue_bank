@@ -1,1 +1,1 @@
-console.log('hei world');
+import '@/styles/global.scss'
