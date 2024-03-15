@@ -40,6 +40,7 @@ class RenderService {
 				const foundComponent = components.find(Component => {
 					const instance =
 						Component instanceof ChildComponent ? Component : new Component()
+
 					return instance.constructor.name.toLowerCase() === componentName
 				})
 
@@ -47,11 +48,11 @@ class RenderService {
 					const componentContent =
 						foundComponent instanceof ChildComponent
 							? foundComponent.render()
-							: new foundComponent.render()
+							: new foundComponent().render()
 					element.replaceWith(componentContent)
 				} else {
 					console.error(
-						`Component ${componentName} not found in the provided components array`
+						`Component "${componentName}" not found in the provided components array.`
 					)
 				}
 			}
@@ -60,8 +61,8 @@ class RenderService {
 
 	/**
 	 * @param {Object} moduleStyles
-	 * @param {String} element
-	 * @return {void}
+	 * @param {string} element
+	 * @returns {void}
 	 */
 	#applyModuleStyles(moduleStyles, element) {
 		if (!element) return
@@ -83,4 +84,14 @@ class RenderService {
 		elements.forEach(applyStyles)
 	}
 }
+
 export default new RenderService()
+
+{
+	/* <div class='home'>
+	<h1 class='text'></h1>
+	<component-heading></component-heading>
+	<component-card-info></component-card-info>
+</div>
+ */
+}
