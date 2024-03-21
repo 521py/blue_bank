@@ -38,6 +38,9 @@ export class Auth extends BaseScreen {
 		if (!this.#validateFields(formValues)) {
 			return
 		}
+
+		const type = this.#isTypeLogin ? 'login' : 'register'
+		this.authService.main(type, formValues)
 	}
 
 	#changeFormType = event => {

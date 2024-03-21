@@ -12,7 +12,7 @@ export class Store {
 	 * @param {Object} initialState - The initial state for the store.
 	 */
 	constructor(initialState) {
-		this.observer = []
+		this.observers = []
 
 		this.storageService = new StorageService()
 		const savedUser = this.storageService.getItem(USER_STORAGE_KEY)
@@ -37,6 +37,7 @@ export class Store {
 		if (!Store.instance) {
 			Store.instance = new Store({ user: null })
 		}
+
 		return Store.instance
 	}
 
@@ -95,5 +96,3 @@ export class Store {
 		this.storageService.setItem(USER_STORAGE_KEY, newUser)
 	}
 }
-
-// logout
