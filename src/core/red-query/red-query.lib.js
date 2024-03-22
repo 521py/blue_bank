@@ -25,12 +25,11 @@ export async function redQuery({
 	onError = null,
 	onSuccess = null
 }) {
-	let isLoading = false,
+	let isLoading = true,
 		error = null,
 		data = null
 	const url = `${SERVER_URL}/api${path}`
 
-	/* ACCESS_TOKEN from LS */
 	const accessToken = new StorageService().getItem(ACCESS_TOKEN_KEY)
 
 	const requestOptions = {
@@ -60,8 +59,11 @@ export async function redQuery({
 			const errorData = await response.json()
 			const errorMessage = extractErrorMessage(errorData)
 
+			// Проверяем, что onError не равен null, прежде чем его вызывать
 			if (onError) {
 				onError(errorMessage)
+			} else {
+				console.error('An error occurred:', errorMessage)
 			}
 
 			/* Notification error */
@@ -70,8 +72,11 @@ export async function redQuery({
 	} catch (errorData) {
 		const errorMessage = extractErrorMessage(errorData)
 
-		if (errorMessage) {
+		// Проверяем, что onError не равен null, прежде чем его вызывать
+		if (onError) {
 			onError(errorMessage)
+		} else {
+			console.error('An error occurred:', errorMessage)
 		}
 	} finally {
 		isLoading = false

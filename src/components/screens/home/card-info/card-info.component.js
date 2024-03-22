@@ -7,6 +7,7 @@ import { formatToCurrency } from '@/utils/format/format-to-currency'
 import { CardService } from '@/api/card.service'
 import styles from './card-info.module.scss'
 import template from './card-info.template.html'
+import { BALANCE_UPDATED } from '@/constants/event.constants'
 
 const CODE = '*****'
 
@@ -14,10 +15,28 @@ export class CardInfo extends ChildComponent {
 	constructor() {
 		super()
 
-		this.store = new Store.getInstance()
+		this.store = Store.getInstance()
 		this.cardService = new CardService()
 
 		this.element = renderService.htmlToElement(template, [], styles)
+
+		this.#addListeners()
+	}
+
+	#addListeners() {
+		document.addEventListener(BALANCE_UPDATED, this.#onBalanceUpdated)
+	}
+
+	#removeListeners() {
+		document.removeEventListener(BALANCE_UPDATED, this.#onBalanceUpdated)
+	}
+
+	#onBalanceUpdated = () => {
+		this.fetchData()
+	}
+
+	destroy() {
+		this.#removeListeners()
 	}
 
 	#copyCardNumber(e) {
@@ -29,11 +48,11 @@ export class CardInfo extends ChildComponent {
 		})
 	}
 
-	#toggleCvc(CardCvcElement) {
-		const text = CardCvcElement.text()
+	#toggleCvc(cardCvcElement) {
+		const text = cardCvcElement.text()
 		text === CODE
-			? CardCvcElement.text(this.card.cvc)
-			: CardCvcElement.text(CODE)
+			? cardCvcElement.text(this.card.cvc)
+			: cardCvcElement.text(CODE)
 	}
 
 	fillElements() {
