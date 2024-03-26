@@ -2,6 +2,7 @@ import ChildComponent from '@/core/component/child-component'
 import { $R } from '@/core/rquery/rquery.lib'
 import renderService from '@/core/services/render.service'
 import { Store } from '@/core/store/store'
+import { Loader } from '@/components/ui/loader/loader.component'
 import { formatCardNumber } from '@/utils/format/format-card-number'
 import { formatToCurrency } from '@/utils/format/format-to-currency'
 import { CardService } from '@/api/card.service'
@@ -98,7 +99,10 @@ export class CardInfo extends ChildComponent {
 	}
 
 	render() {
-		if (this.store.state.user) this.fetchData()
+		if (this.store.state.user) {
+			$R(this.element).html(new Loader().render().outerHTML)
+			setTimeout(() => this.fetchData(), 500)
+		}
 
 		return this.element
 	}
