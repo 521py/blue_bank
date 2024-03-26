@@ -68,6 +68,7 @@ export async function redQuery({
 
 			/* Notification error */
 			new NotificationService('error', errorMessage)
+			console.log(errorData)
 		}
 	} catch (errorData) {
 		const errorMessage = extractErrorMessage(errorData)
@@ -78,6 +79,8 @@ export async function redQuery({
 		} else {
 			console.error('An error occurred:', errorMessage)
 		}
+		new NotificationService().show('error', errorMessage)
+		console.log(errorData)
 	} finally {
 		isLoading = false
 	}
